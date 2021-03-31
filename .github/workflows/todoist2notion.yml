@@ -1,0 +1,27 @@
+name: todoist2notion
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # every 5 minutes
+  push:
+    branches:
+      - master
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+        
+    - name: Install requirements
+      run: |
+        pip install -r requirements.txt
+      
+    - name: Run todoist2notion
+      run: |
+        python notion2todist/notion2todist.py --notion-view https://www.notion.so/xtruder/926813a4158445508943b9907ae9f1da?v=43a09e59b5fc4ff5b64d93644860092a^C
