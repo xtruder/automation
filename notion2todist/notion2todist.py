@@ -145,7 +145,7 @@ def main(
             logger.info("parsing item date %s", item_due)
 
             try:
-                due_date = datetime.strptime(item_due["date"], "%Y-%m-%dT%H:%M:%S")
+                due_date = datetime.strptime(item_due["date"], "%Y-%m-%dT%H:%M:%SZ")
             except:
                 due_date = datetime.strptime(item_due["date"], "%Y-%m-%d")
             
