@@ -66,7 +66,7 @@ def main(
             "project": project.title if project is not None else None
         })
 
-        todoist_project = next((p for p in all_projects if p.data["name"] == project.title), None)
+        todoist_project = next((p for p in all_projects if p.data["name"] == project.title and p.data["is_deleted"] != 1), None)
         if not todoist_project:
             logger.info("creating new todoist project")
             todoist_project = todoist_client.projects.add(project.title)
@@ -74,10 +74,10 @@ def main(
         todoist_project_id = todoist_project.data["id"]
         project_mappings[todoist_project_id] = project
 
-        logger.info("todoist project %d", todoist_project_id)
+        logger.info("todoist project %s", str(todoist_project_id))
 
         # check if item with same id alreay exists
-        item = next((item for item in all_items if "temp_id" in item.data and item.data["temp_id"] == row.id), None)
+        item = next((item for item in all_items if "temp_id" in item.data and item.data["temp_id"] == row.id and item.data["is_deleted"] != 1 and item.data["project_id"] == todoist_project_id), None)
         if item is not None:
             item_id = item.data["id"]
 
@@ -115,13 +115,16 @@ def main(
 
         todoist_client.commit()
 
+
     logging.info("syncing events from todoist to notion")
 
+    todoist_client.sync()
+
     for item in todoist_client.items.all():
-        if item.data["checked"] == 1:
+        if item.data["checked"] == 1 or item.data["is_deleted"] == 1:
             continue
 
-        if "temp_id" in item.data and item.data["temp_id"] in synced_events:
+        if "temp_id" in item.data:
             continue
 
         item_id = item.data["id"]
@@ -147,7 +150,10 @@ def main(
             try:
                 due_date = datetime.strptime(item_due["date"], "%Y-%m-%dT%H:%M:%SZ")
             except:
-                due_date = datetime.strptime(item_due["date"], "%Y-%m-%d")
+                try:
+                    due_date = datetime.strptime(item_due["date"], "%Y-%m-%dT%H:%M:%S")
+                except:
+                    due_date = datetime.strptime(item_due["date"], "%Y-%m-%d")
             
             setattr(row, date_field, NotionDate(due_date,
                 timezone = item_due["timezone"] if "timezone" in item_due else None))
