@@ -212,7 +212,7 @@ def main(
                     except:
                         due_date = datetime.strptime(item_due["date"], "%Y-%m-%d")
                 
-                setattr(row, date_field, NotionDate(due_date,
+                setattr(row, notion_date_field, NotionDate(due_date,
                     timezone = item_due["timezone"] if "timezone" in item_due else None))
 
 if __name__ == "__main__":
