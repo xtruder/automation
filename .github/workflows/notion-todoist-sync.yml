@@ -1,4 +1,4 @@
-name: todoist2notion
+name: notion-todoist-sync
 
 on:
   schedule:
