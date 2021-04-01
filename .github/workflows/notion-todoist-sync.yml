@@ -28,6 +28,11 @@ jobs:
     - name: Install requirements
       run: |
         pip install -r requirements.txt
+
+    - name: 'Block Concurrent Executions'
+      uses: softprops/turnstyle@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Run todoist2notion
       env:
