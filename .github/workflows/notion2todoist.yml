@@ -31,5 +31,6 @@ jobs:
       env:
         NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         TODOIST_TOKEN: ${{ secrets.TODOIST_TOKEN }}
+        NOTION_PROJECTS_VIEW: https://www.notion.so/xtruder/5a506eca2d9c4d798b20375e194e2549?v=5b661952eef34aa185481f9991a27c1e
       run: |
         python notion2todist/notion2todist.py --notion-view https://www.notion.so/xtruder/926813a4158445508943b9907ae9f1da?v=43a09e59b5fc4ff5b64d93644860092a^C
