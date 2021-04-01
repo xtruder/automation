@@ -187,7 +187,7 @@ def main(
             row.project = [project]
 
         # create new project in notion if project with same name not found
-        else:
+        elif todoist_project_name != "Inbox":
             logger.info("creating new project in notion %s", todoist_project_name)
 
             project = notion_projects_view.collection.add_row()
