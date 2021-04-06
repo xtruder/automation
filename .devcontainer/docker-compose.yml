@@ -18,8 +18,23 @@ services:
       - nix:/nix
     security_opt:
       - label:disable
+    links:
+      - postgres
+    network_mode: "bridge"
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
     network_mode: "bridge"
 
 volumes:
   nix:
   direnv-allow:
+  postgres:

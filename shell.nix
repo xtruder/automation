@@ -3,6 +3,7 @@
 
 pkgs.mkShell {
   buildInputs = with pkgs; [
+    postgresql_12
     (python3.withPackages (ps: with ps; [ virtualenv ]))
   ];
 
